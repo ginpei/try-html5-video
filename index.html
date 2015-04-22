@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>HTML5 Video</title>
+		<style>
+			.player {
+				height: 300px;
+				width: 400px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>HTML5 Video</h1>
+		<div><video class="player js-player" controls></video></video>
+		<div>
+			<select class="js-videos" disabled>
+				<option value="./video-1.mp4" selected>Video 1</option>
+			</select>
+			<button class="js-load" disabled>Load</button>
+			<br />
+			<button class="js-play" disabled>Play</button>
+			<button class="js-pause" disabled>Pause</button>
+			<input class="js-currentTime" type="range" min="0" max="1" value="0" disabled />
+			<span class="js-currentTimeText">-:--</span>
+			/
+			<span class="js-durationText">-:--</span>
+			<br />
+			<label><input class="js-mute" type="checkbox" disabled>Mute</label>
+			<input class="js-volume" type="range" min="0" max="1" step="0.01" value="0" disabled />
+		</div>
+		<script>
+(function() {
+	var elPlayer = document.querySelector('.js-player');
+	var videoId = elPlayer.getAttribute('data-videoid');
+	var elVideos = document.querySelector('.js-videos');
+	var elLoad = document.querySelector('.js-load');
+	var elPlay = document.querySelector('.js-play');
+	var elPause = document.querySelector('.js-pause');
+	var elCurrentTime = document.querySelector('.js-currentTime');
+	var elCurrentTimeText = document.querySelector('.js-currentTimeText');
+	var elDurationText = document.querySelector('.js-durationText');
+	var elMute = document.querySelector('.js-mute');
+	var elVolume = document.querySelector('.js-volume');
+
+	elCurrentTimeText.setTime = elDurationText.setTime = function(time) {
+		var min = parseInt(time/60, 10);
+		var sec = ('0' + parseInt(time%60, 10)).slice(-2);
+		var text = min + ':' + sec;
+		this.innerHTML = text;
+	};
+
+	elPlayer.on = function(type, listener) {
+		this.addEventListener(type, listener);
+		return this;
+	};
+
+	var typeListener = function(event) { console.log(':'+event.type); };
+	elPlayer
+		.on('loadstart', typeListener)
+		.on('progress', typeListener)
+		.on('suspended', typeListener)
+		.on('abort', typeListener)
+		.on('error', typeListener)
+		.on('emptied', typeListener)
+		.on('stalled', typeListener)
+		.on('loadedmetadata', typeListener)
+		.on('loadeddata', typeListener)
+		.on('canplay', typeListener)
+		.on('canplaythrough', typeListener)
+		.on('playing', typeListener)
+		.on('waiting', typeListener)
+		.on('seeking', typeListener)
+		.on('seeked', typeListener)
+		.on('ended', typeListener)
+		.on('durationchange', typeListener)
+		.on('timeupdate', typeListener)
+		.on('play', typeListener)
+		.on('pause', typeListener)
+		.on('ratechange', typeListener)
+		.on('volumechange ', typeListener);
+
+	elLoad.addEventListener('click', function(event) {
+		var videoId = elVideos.value;
+		elPlayer.src = videoId;
+	});
+
+	elVideos.disabled = false;
+	elLoad.disabled = false;
+})();
+		</script>
+	</body>
+</html>
