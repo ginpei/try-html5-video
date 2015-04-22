@@ -26,8 +26,8 @@
 			/
 			<span class="js-durationText">-:--</span>
 			<br />
-			<label><input class="js-mute" type="checkbox" disabled>Mute</label>
-			<input class="js-volume" type="range" min="0" max="1" step="0.01" value="0" disabled />
+			<label><input class="js-mute" type="checkbox">Mute</label>
+			<input class="js-volume" type="range" min="0" max="1" step="0.01" value="0" />
 		</div>
 		<script>
 (function() {
@@ -95,8 +95,6 @@
 			elPlay.disabled = false;
 			elPause.disabled = true;
 			elCurrentTime.disabled = false;
-			elMute.disabled = false;
-			elVolume.disabled = false;
 		})
 		.on('play', function(event) {
 			elPlay.disabled = true;
