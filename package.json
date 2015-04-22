@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "scripts": {
+    "get-video": "curl -o video-1.mp4 http://www.gomplayer.jp/img/sample/mp4_h264_aac.mp4"
+  }
+}
