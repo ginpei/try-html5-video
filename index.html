@@ -42,6 +42,7 @@
 	var elDurationText = document.querySelector('.js-durationText');
 	var elMute = document.querySelector('.js-mute');
 	var elVolume = document.querySelector('.js-volume');
+	window.player = elPlayer;
 
 	elCurrentTimeText.setTime = elDurationText.setTime = function(time) {
 		var min = parseInt(time/60, 10);
@@ -80,9 +81,62 @@
 		.on('ratechange', typeListener)
 		.on('volumechange ', typeListener);
 
+	elPlayer
+		.on('canplay', function(event) {
+			elCurrentTime.max = player.duration;
+			elCurrentTime.value = player.currentTime;
+			elCurrentTimeText.setTime(player.currentTime);
+			elDurationText.setTime(player.duration);
+			elVolume.checked = player.muted;
+			elVolume.value = player.volume;
+
+			elVideos.disabled = false;
+			elLoad.disabled = false;
+			elPlay.disabled = false;
+			elPause.disabled = true;
+			elCurrentTime.disabled = false;
+			elMute.disabled = false;
+			elVolume.disabled = false;
+		})
+		.on('play', function(event) {
+			elPlay.disabled = true;
+			elPause.disabled = false;
+		})
+		.on('timeupdate', function(event) {
+			elCurrentTime.value = player.currentTime;
+			elCurrentTimeText.setTime(player.currentTime);
+		})
+		.on('pause', function(event) {
+			elPlay.disabled = false;
+			elPause.disabled = true;
+		})
+		.on('volumechange', function(event) {
+			elMute.checked = player.muted;
+			elVolume.value = player.volume;
+		})
+		.on('error', function(event) {
+			console.error(event);
+		});
+
 	elLoad.addEventListener('click', function(event) {
 		var videoId = elVideos.value;
 		elPlayer.src = videoId;
+	});
+
+	elPlay.addEventListener('click', function(event) {
+		player.play();
+	});
+	elPause.addEventListener('click', function(event) {
+		player.pause();
+	});
+	elCurrentTime.addEventListener('change', function(event) {
+		player.currentTime = this.value;
+	});
+	elMute.addEventListener('click', function(event) {
+		player.muted = elMute.checked;
+	});
+	elVolume.addEventListener('change', function(event) {
+		player.volume = this.value;
 	});
 
 	elVideos.disabled = false;
